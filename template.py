@@ -24,6 +24,7 @@ list_of_files = [
     "params.yaml",
     "requirements.txt",
     "setup.py",
+    "templates/index.html",
     # research/trials.ipynb is for scratchpad work during the project development.
     "research/trials.ipynb"
 ]
