@@ -12,7 +12,7 @@ REPO_NAME = "write.io"
 # Git Author/Username
 AUTHOR_USER_NAME = "ElysianStorm"
 # Local project-repo src name ('project_name' in src\{project_name})
-SRC_REPO = "write.io" 
+SRC_REPO = "write_io" 
 # Git Linked Email Address
 AUTHOR_EMAIL = "alok212@hotmail.com"
 

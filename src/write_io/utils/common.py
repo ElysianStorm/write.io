@@ -1,7 +1,7 @@
 import os
 from box.exceptions import BoxValueError
 import yaml
-from write.io import logger
+from write_io import logger
 import json
 import joblib
 from box import ConfigBox
