@@ -7,7 +7,7 @@ import logging
 # Configuring logging
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s]: %(message)s:')
 
-project_name = "write.io"
+project_name = "write_io"
 
 list_of_files = [
     ".github/workflows/.gitkeep",
