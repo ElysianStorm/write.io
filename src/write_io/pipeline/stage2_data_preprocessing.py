@@ -10,7 +10,7 @@ class DataPreProcessingPipeline:
 
     def main(self):
         config = ConfigurationManager()
-        data_preprocessing_config = config.get_file_ppparms_config()
+        data_pre_processing_config = config.get_file_ppparms_config()
         data_pre_processing = DataPreProcessing(config=data_pre_processing_config)
         data_pre_processing.csv_cleanup()
         data_pre_processing.image_cleanup()
