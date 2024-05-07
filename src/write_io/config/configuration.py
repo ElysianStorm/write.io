@@ -34,7 +34,7 @@ class ConfigurationManager:
 
         return data_ingestion_config
 
-    def get_ppparms_config(self) -> DataIngestionConfig:
+    def get_file_ppparms_config(self) -> DataIngestionConfig:
         config = self.config.data_pre_processing
 
         data_ingestion_config = DataIngestionConfig(
