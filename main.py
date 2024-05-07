@@ -11,7 +11,7 @@ try:
 
     STAGE_NAME = "Data Pre Processing Stage"
     logger.info(f"------------- STAGE {STAGE_NAME} Started -------------")
-    obj = DataIngestionTrainingPipeline()
+    obj = DataPreProcessingPipeline()
     obj.main()
     logger.info(f"------------- STAGE {STAGE_NAME} Completed -------------")
 except Exception as e:
