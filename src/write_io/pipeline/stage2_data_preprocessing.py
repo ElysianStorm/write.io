@@ -1,3 +1,4 @@
+from write_io.config.configuration import ConfigurationManager
 from write_io.components.data_pre_processing import DataPreProcessing
 from write_io import logger
 
