@@ -1,13 +1,13 @@
 import os
 import urllib.request as request
 import zipfile
-from write_io.entity.config_entity import DataIngestionConfig
+from write_io.entity.config_entity import DataPreProcessingConfig
 from write_io import logger
 from write_io.utils.common import get_size
 from pathlib import Path
 
-class DataIngestion:
-    def __init__(self, config: DataIngestionConfig):
+class DataPreProcessing:
+    def __init__(self, config: DataPreProcessingConfig):
         self.config = config
 
     def csv_cleanup(self):
@@ -46,7 +46,7 @@ class DataIngestion:
         with zipfile.ZipFile(self.config.source_URL, 'r') as zip_ref:
             zip_ref.extractall((unzip_path))
 
-          def image_normalization(self):
+    def image_normalization(self):
         """
             zip_file_path: str
             Extracts the zip file into the data directory defined in unzip_path
