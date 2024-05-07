@@ -2,7 +2,8 @@ from email.mime import base
 from write_io.constants import *
 from write_io.utils.common import read_yaml, create_directories
 from write_io.entity.config_entity import (DataIngestionConfig,
-                                           PrepareBaseModelConfig)
+                                           PrepareBaseModelConfig,
+                                           DataPreProcessingConfig)
 
 # The ConfigurationManager is responsible for managing all the configuration details such as:
 # Data Ingestion Configuration and more
@@ -32,6 +33,17 @@ class ConfigurationManager:
         )
 
         return data_ingestion_config
+
+    def get_ppparms_config(self) -> DataIngestionConfig:
+        config = self.config.data_pre_processing
+
+        data_ingestion_config = DataIngestionConfig(
+            resize_width = 100,
+            resize_height = 200
+        )
+
+        return data_pre_processing
+    
     
 
     def prepare_base_model(self) -> PrepareBaseModelConfig:
