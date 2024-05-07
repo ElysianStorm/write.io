@@ -2,7 +2,7 @@ from write_io.config.configuration import ConfigurationManager
 from write_io.components.data_pre_processing import DataPreProcessing
 from write_io import logger
 
-STAGE_NAME = "Data Ingestion stage"
+STAGE_NAME = "Data Pre Processing stage"
 
 class DataPreProcessingPipeline:
     def __init__(self):
