@@ -22,8 +22,10 @@ from keras.optimizers import Adam
 class DataPreProcessing:
     def __init__(self, config: DataPreProcessingConfig):
         self.config = config
-        self.train = pd.read_csv('/kaggle/input/handwriting-recognition/written_name_train_v2.csv')
-        self.valid = pd.read_csv('/kaggle/input/handwriting-recognition/written_name_validation_v2.csv')
+        csv_path_training = self.file_path_training
+        csv_path_validation = self.file_path_validation
+        self.train = pd.read_csv(csv_path_training)
+        self.valid = pd.read_csv(file_path_validation)
 
     def csv_cleanup(self):
         self.train.dropna(axis=0, inplace=True)
