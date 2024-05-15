@@ -22,10 +22,15 @@ from keras.optimizers import Adam
 class DataPreProcessing:
     def __init__(self, config: DataPreProcessingConfig):
         self.config = config
-        csv_path_training = self.file_path_training
-        csv_path_validation = self.file_path_validation
+        csv_path_training = config.file_path_training
+        csv_path_validation = config.file_path_validation
         self.train = pd.read_csv(csv_path_training)
-        self.valid = pd.read_csv(file_path_validation)
+        self.valid = pd.read_csv(csv_path_validation)
+
+        image_path_training = config.image_path_training
+        image_path_validation = config.image_path_validation
+        self.img_train = pd.read_csv(image_path_training)
+        self.img_valid = pd.read_csv(image_path_validation)
 
     def csv_cleanup(self):
         self.train.dropna(axis=0, inplace=True)
@@ -33,8 +38,8 @@ class DataPreProcessing:
         unreadable = self.train[self.train['IDENTITY'] == 'UNREADABLE']
         unreadable.reset_index(inplace = True, drop=True)
 
-        self.train = self.train[train['IDENTITY'] != 'UNREADABLE']
-        self.valid = self.valid[valid['IDENTITY'] != 'UNREADABLE']
+        self.train = self.train[self.train['IDENTITY'] != 'UNREADABLE']
+        self.valid = self.valid[self.valid['IDENTITY'] != 'UNREADABLE']
 
         self.train['IDENTITY'] = self.train['IDENTITY'].str.upper()
         self.valid['IDENTITY'] = self.valid['IDENTITY'].str.upper()
@@ -67,18 +72,18 @@ class DataPreProcessing:
         train_x = []
 
         for i in range(train_size):
-            img_dir = '/kaggle/input/handwriting-recognition/train_v2/train/'+train.loc[i, 'FILENAME']
+            img_dir = self.img_train+self.train.loc[i, 'FILENAME']
             image = cv2.imread(img_dir, cv2.IMREAD_GRAYSCALE)
-            image = preprocess(image)
+            image = image_cleanup(image)
             image = image/255.
             train_x.append(image)
 
             valid_x = []
 
         for i in range(valid_size):
-            img_dir = '/kaggle/input/handwriting-recognition/validation_v2/validation/'+valid.loc[i, 'FILENAME']
+            img_dir = self.img_valid+self.valid.loc[i, 'FILENAME']
             image = cv2.imread(img_dir, cv2.IMREAD_GRAYSCALE)
-            image = preprocess(image)
+            image = image_cleanup(image)
             image = image/255.
             valid_x.append(image)
 
