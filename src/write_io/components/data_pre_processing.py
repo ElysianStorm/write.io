@@ -74,7 +74,7 @@ class DataPreProcessing:
         for i in range(train_size):
             img_dir = self.img_train+self.train.loc[i, 'FILENAME']
             image = cv2.imread(img_dir, cv2.IMREAD_GRAYSCALE)
-            image = image_cleanup(image)
+            image = self.image_cleanup(image)
             image = image/255.
             train_x.append(image)
 
@@ -83,7 +83,7 @@ class DataPreProcessing:
         for i in range(valid_size):
             img_dir = self.img_valid+self.valid.loc[i, 'FILENAME']
             image = cv2.imread(img_dir, cv2.IMREAD_GRAYSCALE)
-            image = image_cleanup(image)
+            image = self.image_cleanup(image)
             image = image/255.
             valid_x.append(image)
 

@@ -1,6 +1,6 @@
 from write_io import logger
 from write_io.pipeline.stage_01_data_ingestion import DataIngestionTrainingPipeline
-from write_io.pipeline.stage_02_data_preprocessing.py import DataPreProcessingPipeline
+from write_io.pipeline.stage_02_data_preprocessing import DataPreProcessingPipeline
 
 try:
     STAGE_NAME = "Data Ingestion Stage"
