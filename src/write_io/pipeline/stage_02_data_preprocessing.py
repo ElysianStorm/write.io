@@ -13,7 +13,6 @@ class DataPreProcessingPipeline:
         data_pre_processing_config = config.pre_processing_params_config()
         data_pre_processing = DataPreProcessing(config=data_pre_processing_config)
         data_pre_processing.csv_cleanup()
-        data_pre_processing.image_cleanup()
         data_pre_processing.reformat_csv()
         data_pre_processing.image_normalization()
 
