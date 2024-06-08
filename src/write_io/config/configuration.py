@@ -2,7 +2,6 @@ from email.mime import base
 from write_io.constants import *
 from write_io.utils.common import read_yaml, create_directories
 from write_io.entity.config_entity import (DataIngestionConfig,
-                                           PrepareBaseModelConfig,
                                            DataPreProcessingConfig)
 
 # The ConfigurationManager is responsible for managing all the configuration details such as:
@@ -38,27 +37,31 @@ class ConfigurationManager:
         config = self.config.data_pre_processing
 
         data_pre_processing_config = DataPreProcessingConfig(
-            resize_width = 100,
-            resize_height = 200
+            resize_width = config.resize_width,
+            resize_height = config.resize_height,
+            file_path_training = config.file_path_training,
+            file_path_validation = config.file_path_validation,
+            image_path_training = config.image_path_training,
+            image_path_validation = config.image_path_validation
         )
 
         return data_pre_processing_config
     
     
 
-    def prepare_base_model(self) -> PrepareBaseModelConfig:
-        config = self.config.prepare_base_model
+    # def prepare_base_model(self) -> PrepareBaseModelConfig:
+    #     config = self.config.prepare_base_model
 
-        create_directories([config.root_dir])
+    #     create_directories([config.root_dir])
 
-        prepare_base_model_config = PrepareBaseModelConfig(
-            root_dir = Path(config.root_dir),
-            base_model_path= Path(config.base_model_path),
-            updated_base_model_path= Path(config.updated_base_model_path),
-            params_image_size= self.params.IMAGE_SIZE,
-            params_learning_rate= self.params.LEARNING_RATE,
-            params_include_top= self.params.INCLUDE_TOP,
-            params_weights= self.params.WEIGHTS
-        )
+    #     prepare_base_model_config = PrepareBaseModelConfig(
+    #         root_dir = Path(config.root_dir),
+    #         base_model_path= Path(config.base_model_path),
+    #         updated_base_model_path= Path(config.updated_base_model_path),
+    #         params_image_size= self.params.IMAGE_SIZE,
+    #         params_learning_rate= self.params.LEARNING_RATE,
+    #         params_include_top= self.params.INCLUDE_TOP,
+    #         params_weights= self.params.WEIGHTS
+    #     )
 
-        return prepare_base_model_config
+    #     return prepare_base_model_config
