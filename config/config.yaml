@@ -7,8 +7,10 @@ data_ingestion:
   unzip_dir: artifacts/data_ingestion
 
 data_pre_processing:
-  resize_width: 100
-  resize_height: 200
+  train_size: 30
+  validation_size: 10
+  resize_width: 256
+  resize_height: 64
   file_path_training: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/written_name_train_v2.csv
   file_path_validation: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/written_name_validation_v2.csv
   image_path_training: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/train_v2/train/

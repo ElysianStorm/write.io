@@ -13,6 +13,8 @@ class DataIngestionConfig:
 
 @dataclass(frozen=True)
 class DataPreProcessingConfig:
+    train_size: int
+    validation_size: int
     resize_width: int
     resize_height: int
     file_path_training: Path
