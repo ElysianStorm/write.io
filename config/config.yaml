@@ -2,12 +2,23 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: D:/Downloads/archive.zip
+  source_URL: D:/Document/GitHub/write_io_dataset.zip
   local_data_file: artifacts/data_ingestion/data.zip
   unzip_dir: artifacts/data_ingestion
 
-prepare_base_model:
-  root_dir: artifacts/prepare_base_model
-  base_model_path: artifacts/prepare_base_model/base_model.h5
-  updated_base_model_path: artifacts/prepare_base_model/updated_base_model.h5
+data_pre_processing:
+  resize_width: 100
+  resize_height: 200
+  file_path_training: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/written_name_train_v2.csv
+  file_path_validation: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/written_name_validation_v2.csv
+  image_path_training: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/train_v2/train
+  image_path_validation: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/validation_v2/validation
+
+# prepare_base_model:
+#   root_dir: artifacts/prepare_base_model
+#   base_model_path: artifacts/prepare_base_model/base_model.h5
+#   updated_base_model_path: artifacts/prepare_base_model/updated_base_model.h5
+
+# data_pre_processing:
+
 
