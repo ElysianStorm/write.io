@@ -37,6 +37,8 @@ class ConfigurationManager:
         config = self.config.data_pre_processing
 
         data_pre_processing_config = DataPreProcessingConfig(
+            train_size = config.train_size,
+            validation_size = config.validation_size,
             resize_width = config.resize_width,
             resize_height = config.resize_height,
             file_path_training = config.file_path_training,

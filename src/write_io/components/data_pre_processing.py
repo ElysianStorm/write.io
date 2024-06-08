@@ -29,6 +29,7 @@ class DataPreProcessing:
 
         self.img_train = config.image_path_training
         self.img_valid = config.image_path_validation
+        
 
     def csv_cleanup(self):
         self.train.dropna(axis=0, inplace=True)
@@ -64,8 +65,8 @@ class DataPreProcessing:
         return cv2.rotate(final_img, cv2.ROTATE_90_CLOCKWISE)
     
     def image_normalization(self):
-        train_size = 30000
-        valid_size= 3000
+        train_size = self.config.train_size
+        valid_size= self.config.validation_size
 
         train_x = []
 
@@ -85,7 +86,7 @@ class DataPreProcessing:
             image = image/255.
             valid_x.append(image)
 
-        train_x = np.array(train_x).reshape(-1, 256, 64, 1)
+        train_x = np.array(train_x).reshape(-1, self.config.resize_width, self.config.resize_height, 1)
         valid_x = np.array(valid_x).reshape(-1, 256, 64, 1)
           
     
