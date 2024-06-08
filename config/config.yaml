@@ -11,8 +11,8 @@ data_pre_processing:
   resize_height: 200
   file_path_training: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/written_name_train_v2.csv
   file_path_validation: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/written_name_validation_v2.csv
-  image_path_training: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/train_v2/train
-  image_path_validation: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/validation_v2/validation
+  image_path_training: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/train_v2/train/
+  image_path_validation: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/validation_v2/validation/
 
 # prepare_base_model:
 #   root_dir: artifacts/prepare_base_model

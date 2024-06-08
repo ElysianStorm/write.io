@@ -27,10 +27,8 @@ class DataPreProcessing:
         self.train = pd.read_csv(csv_path_training)
         self.valid = pd.read_csv(csv_path_validation)
 
-        image_path_training = config.image_path_training
-        image_path_validation = config.image_path_validation
-        self.img_train = pd.read_csv(image_path_training)
-        self.img_valid = pd.read_csv(image_path_validation)
+        self.img_train = config.image_path_training
+        self.img_valid = config.image_path_validation
 
     def csv_cleanup(self):
         self.train.dropna(axis=0, inplace=True)
