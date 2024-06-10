@@ -1,23 +1,11 @@
 import os
-import urllib.request as request
-import zipfile
 from write_io.entity.config_entity import DataPreProcessingConfig
 from write_io import logger
-from write_io.utils.common import get_size
-from pathlib import Path
-
 import os
 import cv2
-import random
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-import tensorflow as tf
-from keras import backend as K
-from keras.models import Model
-from keras.layers import Input, Conv2D, MaxPooling2D, Reshape, Bidirectional, LSTM, Dense, Lambda, Activation, BatchNormalization, Dropout
-from keras.optimizers import Adam
 
 class DataPreProcessing:
     def __init__(self, config: DataPreProcessingConfig):
@@ -42,6 +30,9 @@ class DataPreProcessing:
 
         self.train['IDENTITY'] = self.train['IDENTITY'].str.upper()
         self.valid['IDENTITY'] = self.valid['IDENTITY'].str.upper()
+        logger.info(f"CSV data cleaned.")
+        logger.info("1. Rows with 'UNREADABLE' removed.")
+        logger.info("All strings converted to UPPERCASE")
 
     def reformat_csv(self):    
         self.train.reset_index(inplace = True, drop=True) 
@@ -88,5 +79,6 @@ class DataPreProcessing:
 
         train_x = np.array(train_x).reshape(-1, self.config.resize_width, self.config.resize_height, 1)
         valid_x = np.array(valid_x).reshape(-1, 256, 64, 1)
+        logger.info(f"IMAGE NORMALIZED.")
           
     

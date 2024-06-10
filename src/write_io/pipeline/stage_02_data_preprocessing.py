@@ -16,12 +16,20 @@ class DataPreProcessingPipeline:
         data_pre_processing.reformat_csv()
         data_pre_processing.image_normalization()
 
+        # processed_data = (
+        #     data_pre_processing.train,
+        #     data_pre_processing.valid,
+        #     data_pre_processing.img_train,
+        #     data_pre_processing.img_valid
+        # )
+        # return processed_data
+
 if __name__ == '__main__':
     try:
         logger.info(f"------------- STAGE {STAGE_NAME} Started -------------")
         obj = DataPreProcessingPipeline()
         obj.main()
-        logger.info(f"------------- STAGE {STAGE_NAME} Completed -------------")
+        logger.info(f"+++++++++++++ STAGE {STAGE_NAME} Completed +++++++++++++")
     except Exception as e:
         logger.exception(e)
         raise e

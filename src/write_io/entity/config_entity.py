@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from flask.testing import FlaskClient
-
 # Defining the object of data that will be ingested/used for the project  
 @dataclass(frozen=True)
 class DataIngestionConfig:
@@ -22,13 +20,10 @@ class DataPreProcessingConfig:
     image_path_training: Path
     image_path_validation: Path
 
-# @dataclass(frozen=True)
-# class PrepareBaseModelConfig:
-#     root_dir: Path
-#     base_model_path: Path
-#     updated_base_model_path: Path
-#     params_image_size: list
-#     params_learning_rate: float
-#     params_include_top: bool
-#     params_weights: str
+@dataclass(frozen=True)
+class PrepareBaseModelConfig:
+    alphabets: str
+    max_str_len: int
+    num_of_characters: int
+    num_of_timestamps: int
 

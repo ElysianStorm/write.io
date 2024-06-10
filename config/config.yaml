@@ -16,11 +16,9 @@ data_pre_processing:
   image_path_training: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/train_v2/train/
   image_path_validation: D:/Document/GitHub/write.io/artifacts/data_ingestion/data.zip/validation_v2/validation/
 
-# prepare_base_model:
-#   root_dir: artifacts/prepare_base_model
-#   base_model_path: artifacts/prepare_base_model/base_model.h5
-#   updated_base_model_path: artifacts/prepare_base_model/updated_base_model.h5
-
-# data_pre_processing:
+prepare_base_model:
+  alphabets: "ABCDEFGHIJKLMNOPQRSTUVWXYZ-' "
+  max_str_len: 24
+  num_of_timestamps: 64
 
 

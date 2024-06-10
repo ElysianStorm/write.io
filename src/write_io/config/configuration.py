@@ -1,8 +1,11 @@
 from email.mime import base
+
+from voluptuous import unicode
 from write_io.constants import *
 from write_io.utils.common import read_yaml, create_directories
 from write_io.entity.config_entity import (DataIngestionConfig,
-                                           DataPreProcessingConfig)
+                                           DataPreProcessingConfig,
+                                           PrepareBaseModelConfig)
 
 # The ConfigurationManager is responsible for managing all the configuration details such as:
 # Data Ingestion Configuration and more
@@ -49,7 +52,18 @@ class ConfigurationManager:
 
         return data_pre_processing_config
     
+    def prepare_base_model_params_config(self) -> PrepareBaseModelConfig:
+        config = self.config.prepare_base_model
+        prepare_base_model_config = PrepareBaseModelConfig(
+            alphabets = config.alphabets,
+            max_str_len = config.max_str_len, # max length of input labels
+            num_of_characters = len(config.alphabets) + 1, # +1 for ctc pseudo blank
+            num_of_timestamps = config.num_of_timestamps # max length of predicted labels
+        )
+
+        return prepare_base_model_config
     
+
 
     # def prepare_base_model(self) -> PrepareBaseModelConfig:
     #     config = self.config.prepare_base_model
