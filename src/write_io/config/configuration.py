@@ -62,6 +62,14 @@ class ConfigurationManager:
         )
 
         return prepare_base_model_config
+
+    def prepare_model_params_config(self) -> PrepareModelConfig:
+        config = self.config.prepare_model
+        prepare_model_config = PrepareModelConfig(
+            shape = config.shape, # (256, 64, 1) 
+        )
+
+        return prepare_model_config
     
 
 
