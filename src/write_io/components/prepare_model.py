@@ -7,20 +7,39 @@ import matplotlib.pyplot as plt
 
 class PrepareBaseModel:
     def __init__(self, config_model: PrepareModelConfig):
-        self.config_model = config_model
-        self.alphabets = config_model.alphabets
-        self.max_str_len = config_model.max_str_len # max length of input labels
-        self.num_of_characters = config_model.num_of_characters # +1 for ctc pseudo blank
-        self.num_of_timestamps = config_model.num_of_timestamps # max length of predicted labels
+        input_data = Input(shape=(256, 64, 1), name='input')
 
-        # Get Processed Data
-        self.config_preprocessed_data = config_preprocessed_data
-        csv_path_training = config_preprocessed_data.file_path_training
-        csv_path_validation = config_preprocessed_data.file_path_validation
-        self.train = pd.read_csv(csv_path_training)
-        self.valid = pd.read_csv(csv_path_validation)
-        self.img_train = config_preprocessed_data.image_path_training
-        self.img_valid = config_preprocessed_data.image_path_validation
+        inner = Conv2D(32, (3, 3), padding='same', name='conv1', kernel_initializer='he_normal')(input_data)  
+        inner = BatchNormalization()(inner)
+        inner = Activation('relu')(inner)
+        inner = MaxPooling2D(pool_size=(2, 2), name='max1')(inner)
+        
+        inner = Conv2D(64, (3, 3), padding='same', name='conv2', kernel_initializer='he_normal')(inner)
+        inner = BatchNormalization()(inner)
+        inner = Activation('relu')(inner)
+        inner = MaxPooling2D(pool_size=(2, 2), name='max2')(inner)
+        inner = Dropout(0.3)(inner)
+        
+        inner = Conv2D(128, (3, 3), padding='same', name='conv3', kernel_initializer='he_normal')(inner)
+        inner = BatchNormalization()(inner)
+        inner = Activation('relu')(inner)
+        inner = MaxPooling2D(pool_size=(1, 2), name='max3')(inner)
+        inner = Dropout(0.3)(inner)
+        
+        # CNN to RNN
+        inner = Reshape(target_shape=((64, 1024)), name='reshape')(inner)
+        inner = Dense(64, activation='relu', kernel_initializer='he_normal', name='dense1')(inner)
+        
+        ## RNN
+        inner = Bidirectional(LSTM(256, return_sequences=True), name = 'lstm1')(inner)
+        inner = Bidirectional(LSTM(256, return_sequences=True), name = 'lstm2')(inner)
+        
+        ## OUTPUT
+        inner = Dense(num_of_characters, kernel_initializer='he_normal',name='dense2')(inner)
+        y_pred = Activation('softmax', name='softmax')(inner)
+        
+        model = Model(inputs=input_data, outputs=y_pred)
+        model.summary()
 
     
     def process_labels(self):
