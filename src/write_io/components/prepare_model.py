@@ -5,6 +5,12 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+import tensorflow as tf
+from keras import backend as K
+from keras.models import Model
+from keras.layers import Input, Conv2D, MaxPooling2D, Reshape, Bidirectional, LSTM, Dense, Lambda, Activation, BatchNormalization, Dropout
+from keras.optimizers import Adam
+
 class PrepareModel:
     def __init__(self, config_model: PrepareModelConfig):
         input_data = Input(shape=(256, 64, 1), name='input')
