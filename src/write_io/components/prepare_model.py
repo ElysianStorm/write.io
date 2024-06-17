@@ -41,6 +41,13 @@ class PrepareBaseModel:
         model = Model(inputs=input_data, outputs=y_pred)
         model.summary()
 
+        labels = Input(name='gtruth_labels', shape=[max_str_len], dtype='float32')
+        input_length = Input(name='input_length', shape=[1], dtype='int64')
+        label_length = Input(name='label_length', shape=[1], dtype='int64')
+        
+        ctc_loss = Lambda(ctc_lambda_func, output_shape=(1,), name='ctc')([y_pred, labels, input_length, label_length])
+        model_final = Model(inputs=[input_data, labels, input_length, label_length], outputs=ctc_loss)
+
     
     def ctc_lambda_func(args):
         y_pred, labels, input_length, label_length = args
@@ -49,10 +56,4 @@ class PrepareBaseModel:
         y_pred = y_pred[:, 2:, :]
         return K.ctc_batch_cost(labels, y_pred, input_length, label_length)
     
-    def post_ctc_func(args):
-        labels = Input(name='gtruth_labels', shape=[max_str_len], dtype='float32')
-        input_length = Input(name='input_length', shape=[1], dtype='int64')
-        label_length = Input(name='label_length', shape=[1], dtype='int64')
-        
-        ctc_loss = Lambda(ctc_lambda_func, output_shape=(1,), name='ctc')([y_pred, labels, input_length, label_length])
-        model_final = Model(inputs=[input_data, labels, input_length, label_length], outputs=ctc_loss)
+       
