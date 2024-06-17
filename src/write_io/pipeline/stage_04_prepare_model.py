@@ -10,8 +10,9 @@ class ModelPipeline:
 
     def main(self):
         config = ConfigurationManager()
-        prepare_model_config = config.prepare_model_params_config()
-        prepare_base_model = PrepareModel(config_model=prepare_model_config)
+        # prepare_model_config = config.prepare_model_params_config()
+        # prepare_base_model = PrepareModel(config_model=prepare_model_config)
+        prepare_base_model = PrepareModel()
         # prepare_base_model.process_nums()
 
 if __name__ == '__main__':
