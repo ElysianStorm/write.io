@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-class PrepareBaseModel:
+class PrepareModel:
     def __init__(self, config_model: PrepareModelConfig):
         input_data = Input(shape=(256, 64, 1), name='input')
 
