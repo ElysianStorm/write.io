@@ -42,37 +42,17 @@ class PrepareBaseModel:
         model.summary()
 
     
-    def process_labels(self):
-        # Process characters to convert them into numbers and add padding to set each label to same length
+def ctc_lambda_func(args):
+    y_pred, labels, input_length, label_length = args
+    # the 2 is critical here since the first couple outputs of the RNN
+    # tend to be garbage
+    y_pred = y_pred[:, 2:, :]
+    return K.ctc_batch_cost(labels, y_pred, input_length, label_length)
+
+def post_ctc_func(args):
+    labels = Input(name='gtruth_labels', shape=[max_str_len], dtype='float32')
+    input_length = Input(name='input_length', shape=[1], dtype='int64')
+    label_length = Input(name='label_length', shape=[1], dtype='int64')
     
-        # train_y, valid_y contains the true labels converted to numbers and padded with -1. The length of each label is equal to max_str_len.
-        # train_label_len, valid_label_len contains the length of each true label (without padding)
-        # train_input_len, valid_input_len contains the length of each predicted label. The length of all the predicted labels is constant i.e number of timestamps - 2.
-        # train_output, valid_output is a dummy output for ctc loss.
-        
-        # Process Labels for Training Data
-        train_size = self.config_preprocessed_data.train_size
-        valid_size = self.config_preprocessed_data.validation_size
-               
-        train_y = np.ones([train_size, self.max_str_len]) * -1
-        train_label_len = np.zeros([train_size, 1])
-        train_input_len = np.ones([train_size, 1]) * (self.num_of_timestamps-2)
-        train_output = np.zeros([train_size])
-
-        for i in range(train_size):
-            train_label_len[i] = len(self.train.loc[i, 'IDENTITY'])
-            train_y[i, 0:len(self.train.loc[i, 'IDENTITY'])]= self.label_to_num(self.train.loc[i, 'IDENTITY'])
-
-        logger.info(f"Training data processed for base model.")
-
-        # Process Labels for Validation Data
-        valid_y = np.ones([valid_size, self.max_str_len]) * -1
-        valid_label_len = np.zeros([valid_size, 1])
-        valid_input_len = np.ones([valid_size, 1]) * (self.num_of_timestamps-2)
-        valid_output = np.zeros([valid_size])
-
-        for i in range(valid_size):
-            valid_label_len[i] = len(self.valid.loc[i, 'IDENTITY'])
-            valid_y[i, 0:len(self.valid.loc[i, 'IDENTITY'])]= self.label_to_num(self.valid.loc[i, 'IDENTITY'])  
-
-        logger.info(f"Training data processed for base model.")
+    ctc_loss = Lambda(ctc_lambda_func, output_shape=(1,), name='ctc')([y_pred, labels, input_length, label_length])
+    model_final = Model(inputs=[input_data, labels, input_length, label_length], outputs=ctc_loss)
