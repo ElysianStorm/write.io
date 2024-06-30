@@ -5,7 +5,8 @@ from write_io.constants import *
 from write_io.utils.common import read_yaml, create_directories
 from write_io.entity.config_entity import (DataIngestionConfig,
                                            DataPreProcessingConfig,
-                                           PrepareBaseModelConfig)
+                                           PrepareBaseModelConfig,
+                                           PrepareModelConfig)
 
 # The ConfigurationManager is responsible for managing all the configuration details such as:
 # Data Ingestion Configuration and more
@@ -62,6 +63,14 @@ class ConfigurationManager:
         )
 
         return prepare_base_model_config
+
+    # def prepare_model_params_config(self) -> PrepareModelConfig:
+       #  config = self.config.prepare_model
+       #  prepare_model_config = PrepareModelConfig(
+       #     shape = config.shape, # (256, 64, 1) 
+       #  )
+
+       #  return prepare_model_config
     
 
 
