@@ -37,3 +37,12 @@ class BuildModelConfig:
     params_batch_size: int
     params_epochs: int
     params_image_size: list
+
+@dataclass(frozen=True)
+class TrainingModelConfig:
+    root_dir: Path
+    model_path: Path
+    params_learning_rate: float
+    params_batch_size: int
+    params_epochs: int
+    params_image_size: list 

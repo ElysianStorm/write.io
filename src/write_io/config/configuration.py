@@ -7,7 +7,8 @@ from write_io.utils.common import read_yaml, create_directories
 from write_io.entity.config_entity import (DataIngestionConfig,
                                            DataPreProcessingConfig,
                                            PrepareBaseModelConfig,
-                                           BuildModelConfig)
+                                           BuildModelConfig,
+                                           TrainingModelConfig)
 
 # The ConfigurationManager is responsible for managing all the configuration details such as:
 # Data Ingestion Configuration and more
@@ -67,7 +68,7 @@ class ConfigurationManager:
 
     def build_model_config(self) -> BuildModelConfig:
         model_config = self.config.build_model
-        
+
         create_directories([model_config.root_dir])
 
         build_model_config = BuildModelConfig(
@@ -80,3 +81,10 @@ class ConfigurationManager:
         )
 
         return build_model_config
+
+    def training_model_config(self) -> TrainingModelConfig:
+         
+        training_model_config = BuildModelConfig(
+        )
+
+        return training_model_config
