@@ -1,11 +1,13 @@
 from email.mime import base
+from venv import create
 
 from voluptuous import unicode
 from write_io.constants import *
 from write_io.utils.common import read_yaml, create_directories
 from write_io.entity.config_entity import (DataIngestionConfig,
                                            DataPreProcessingConfig,
-                                           PrepareBaseModelConfig)
+                                           PrepareBaseModelConfig,
+                                           BuildModelConfig)
 
 # The ConfigurationManager is responsible for managing all the configuration details such as:
 # Data Ingestion Configuration and more
@@ -62,22 +64,19 @@ class ConfigurationManager:
         )
 
         return prepare_base_model_config
-    
 
+    def build_model_config(self) -> BuildModelConfig:
+        model_config = self.config.build_model
+        
+        create_directories([model_config.root_dir])
 
-    # def prepare_base_model(self) -> PrepareBaseModelConfig:
-    #     config = self.config.prepare_base_model
+        build_model_config = BuildModelConfig(
+            root_dir = Path(model_config.root_dir),
+            model_path = Path(model_config.model_path),
+            params_batch_size = self.params.BATCH_SIZE,
+            params_epochs = self.params.EPOCHS,
+            params_learning_rate = self.params.LEARNING_RATE,
+            params_image_size = self.params.IMAGE_SIZE
+        )
 
-    #     create_directories([config.root_dir])
-
-    #     prepare_base_model_config = PrepareBaseModelConfig(
-    #         root_dir = Path(config.root_dir),
-    #         base_model_path= Path(config.base_model_path),
-    #         updated_base_model_path= Path(config.updated_base_model_path),
-    #         params_image_size= self.params.IMAGE_SIZE,
-    #         params_learning_rate= self.params.LEARNING_RATE,
-    #         params_include_top= self.params.INCLUDE_TOP,
-    #         params_weights= self.params.WEIGHTS
-    #     )
-
-    #     return prepare_base_model_config
+        return build_model_config

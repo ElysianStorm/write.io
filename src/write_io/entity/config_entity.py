@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from pathlib import Path
 
+import oauthlib
+
 # Defining the object of data that will be ingested/used for the project  
 @dataclass(frozen=True)
 class DataIngestionConfig:
@@ -27,3 +29,11 @@ class PrepareBaseModelConfig:
     num_of_characters: int
     num_of_timestamps: int
 
+@dataclass(frozen=True)
+class BuildModelConfig:
+    root_dir: Path
+    model_path: Path
+    params_learning_rate: float
+    params_batch_size: int
+    params_epochs: int
+    params_image_size: list

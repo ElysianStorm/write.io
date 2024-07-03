@@ -21,4 +21,6 @@ prepare_base_model:
   max_str_len: 24
   num_of_timestamps: 64
 
-
+build_model:
+  root_dir: D:/Document/GitHub/write.io/artifacts/model
+  model_path: D:/Document/GitHub/write.io/artifacts/model/model.keras
