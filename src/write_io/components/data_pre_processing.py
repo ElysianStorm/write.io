@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from write_io.utils.common import readTrainingDataYaml, updateTrainingYaml
 
 class DataPreProcessing:
     def __init__(self, config: DataPreProcessingConfig):
@@ -80,5 +81,7 @@ class DataPreProcessing:
         train_x = np.array(train_x).reshape(-1, self.config.resize_width, self.config.resize_height, 1)
         valid_x = np.array(valid_x).reshape(-1, 256, 64, 1)
         logger.info(f"IMAGE NORMALIZED.")
+        training_data_yaml = readTrainingDataYaml()
+        training_data_yaml['train_x'] = train_x
           
     
