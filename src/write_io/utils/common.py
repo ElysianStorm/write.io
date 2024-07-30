@@ -123,7 +123,7 @@ def encodeImageIntoBase64(croppedImagePath):
     with open(croppedImagePath, "rb") as f:
         return base64.b64encode(f.read())
 
-def createTrainingDataYaml():
+def readTrainingDataYaml():
     with open('training_data.yaml', mode='rt', encoding='utf-8') as trainingFile:
         trainingObject = yaml.load(trainingFile, Loader=yaml.Loader)
         if(trainingObject) return trainingObject
