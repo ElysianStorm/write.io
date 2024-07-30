@@ -1,9 +1,11 @@
 from write_io.entity.config_entity import PrepareModelConfig
+from write_io.utils.common import readTrainingDataYaml, updateTrainingYaml
 from write_io import logger
 from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
 
 import tensorflow as tf
 from keras import backend as K
@@ -60,6 +62,12 @@ class PrepareModel:
         # the 2 is critical here since the first couple outputs of the RNN
         # tend to be garbage
         y_pred = y_pred[:, 2:, :]
+        
+        training_data_yaml = readTrainingDataYaml()
+        training_data_yaml['y_pred'] = y_pred
+        
+        updateTrainingYaml(training_data_yaml)
+        
         return K.ctc_batch_cost(labels, y_pred, input_length, label_length)
     
        
