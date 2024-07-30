@@ -74,4 +74,16 @@ class PrepareBaseModel:
             valid_label_len[i] = len(self.valid.loc[i, 'IDENTITY'])
             valid_y[i, 0:len(self.valid.loc[i, 'IDENTITY'])]= self.label_to_num(self.valid.loc[i, 'IDENTITY'])  
 
+        training_data_yaml = readTrainingDataYaml()
+        training_data_yaml['train_y'] = train_y
+        training_data_yaml['train_input_len'] = train_input_len
+        training_data_yaml['train_label_len'] = train_label_len
+        training_data_yaml['train_output'] = train_output
+        training_data_yaml['valid_y'] = valid_y
+        training_data_yaml['valid_input_len'] = valid_input_len
+        training_data_yaml['valid_label_len'] = valid_label_len
+        training_data_yaml['valid_output'] = valid_output
+        
+        updateTrainingYaml(training_data_yaml)
+
         logger.info(f"Training data processed for base model.")
