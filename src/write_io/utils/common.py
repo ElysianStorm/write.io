@@ -8,6 +8,7 @@ from box import ConfigBox
 from pathlib import Path
 from typing import Any
 import base64
+import oyaml as yaml
 
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
     """reads yaml file and returns
@@ -121,3 +122,14 @@ def decodeImage(imgstring, fileName):
 def encodeImageIntoBase64(croppedImagePath):
     with open(croppedImagePath, "rb") as f:
         return base64.b64encode(f.read())
+
+def createTrainingDataYaml(trainingData):
+    with open('training_data.yaml', mode='rt', encoding='utf-8') as trainingFile:
+        trainingObject = yaml.load(trainingFile, Loader=yaml.Loader)
+        return trainingObject
+
+def updateTrainingYaml(trainingData):
+    with open('training_data.yaml', mode='wt', encoding='utf-8') as training_data_updated:
+        training_data_updated.write(yaml.dump(trainingData))
+        
+        
