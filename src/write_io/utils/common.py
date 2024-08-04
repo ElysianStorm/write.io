@@ -1,6 +1,7 @@
 import os
 from box.exceptions import BoxValueError
 import yaml
+from yaml import Loader
 from write_io import logger
 import json
 import joblib
@@ -24,7 +25,7 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
     """
     try:
         with open(path_to_yaml) as yaml_file:
-            content = yaml.safe_load(yaml_file)
+            content = yaml.load(yaml_file, Loader=yaml.Loader)
             logger.info(f"yaml file: {path_to_yaml} load successfully")
             return ConfigBox(content)
     except BoxValueError:
@@ -121,3 +122,16 @@ def decodeImage(imgstring, fileName):
 def encodeImageIntoBase64(croppedImagePath):
     with open(croppedImagePath, "rb") as f:
         return base64.b64encode(f.read())
+
+
+def append_to_yaml(file_path, data_to_append):
+    with open(file_path, mode='wt', encoding='utf-8') as yaml_updated:
+        yaml_updated.write(yaml.dump(data_to_append))
+
+# def append_to_yaml(file_path, data_to_append):
+#     with open(file_path, 'a+') as file:
+#         file.seek(0)
+#         existing_data = yaml.full_load(file)
+#         existing_data.append(data_to_append)
+#         file.seek(0)
+#         yaml.dump(existing_data, file, default_flow_style=False)

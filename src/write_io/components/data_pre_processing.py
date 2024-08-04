@@ -1,11 +1,10 @@
-import os
 from write_io.entity.config_entity import DataPreProcessingConfig
 from write_io import logger
-import os
+from write_io.constants import *
 import cv2
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from write_io.utils.common import append_to_yaml
 
 class DataPreProcessing:
     def __init__(self, config: DataPreProcessingConfig):
@@ -17,6 +16,8 @@ class DataPreProcessing:
 
         self.img_train = config.image_path_training
         self.img_valid = config.image_path_validation
+
+        self.training_data = TRAINING_DATA_FILE_PATH
         
 
     def csv_cleanup(self):
@@ -60,7 +61,6 @@ class DataPreProcessing:
         valid_size= self.config.validation_size
 
         train_x = []
-
         for i in range(train_size):
             img_dir = self.img_train+self.train.loc[i, 'FILENAME']
             image = cv2.imread(img_dir, cv2.IMREAD_GRAYSCALE)
@@ -68,8 +68,7 @@ class DataPreProcessing:
             image = image/255.
             train_x.append(image)
 
-            valid_x = []
-
+        valid_x = []
         for i in range(valid_size):
             img_dir = self.img_valid+self.valid.loc[i, 'FILENAME']
             image = cv2.imread(img_dir, cv2.IMREAD_GRAYSCALE)
@@ -79,6 +78,14 @@ class DataPreProcessing:
 
         train_x = np.array(train_x).reshape(-1, self.config.resize_width, self.config.resize_height, 1)
         valid_x = np.array(valid_x).reshape(-1, 256, 64, 1)
+        
+        training_data_info = {
+            'train_x' : train_x,
+            'valid_x' : valid_x
+        }
+
+        append_to_yaml(self.training_data, training_data_info)
+
         logger.info(f"IMAGE NORMALIZED.")
-          
-    
+
+        

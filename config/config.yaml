@@ -23,4 +23,14 @@ prepare_base_model:
 
 build_model:
   root_dir: D:/Document/GitHub/write.io/artifacts/model
-  model_path: D:/Document/GitHub/write.io/artifacts/model/model.keras
+  model_path: artifacts/model/model.keras
+
+  
+prepare_callbacks:
+  root_dir: artificats/prepare_callbacks
+  tensorboard_root_log_dir: artifacts/prepare_callbacks/tensorboard_log_dir
+  checkpoint_model_filepath: artifacts/prepare_callbacks/checkpoint_dir.model.keras
+
+training:
+  root_dir: artifacts/training
+  trained_model_path: artifacts/training/model.keras

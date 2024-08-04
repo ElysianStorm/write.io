@@ -88,18 +88,18 @@ class BuildModel:
         return model
     
     def prepare_model_last_stage(self):
-        ctc_loss = Lambda(self.ctc_lambda_func, output_shape=(1,), name='ctc')([self.y_pred, self.labels, self.input_length, self.label_length])
+        ctc_loss = Lambda(ctc_lambda_func, output_shape=(1,), name='ctc')([self.y_pred, self.labels, self.input_length, self.label_length])
         model_final = Model(inputs=[self.input_data, self.labels, self.input_length, self.label_length], outputs=ctc_loss)
 
         return model_final
 
-    def ctc_lambda_func(self, args):
-        y_pred, labels, input_length, label_length = args
-        # the 2 is critical here since the first couple outputs of the RNN
-        # tend to be garbage
-        y_pred = y_pred[:, 2:, :]
-        return K.ctc_batch_cost(labels, y_pred, input_length, label_length)
-
     @staticmethod
     def save_model(path: Path, model: tf.keras.Model):
         model.save(path)
+
+def ctc_lambda_func(args):
+    y_pred, labels, input_length, label_length = args
+    # the 2 is critical here since the first couple outputs of the RNN
+    # tend to be garbage
+    y_pred = y_pred[:, 2:, :]
+    return K.ctc_batch_cost(labels, y_pred, input_length, label_length)

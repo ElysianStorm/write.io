@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-import oauthlib
-
 # Defining the object of data that will be ingested/used for the project  
 @dataclass(frozen=True)
 class DataIngestionConfig:
@@ -41,8 +39,17 @@ class BuildModelConfig:
 @dataclass(frozen=True)
 class TrainingModelConfig:
     root_dir: Path
-    model_path: Path
+    trained_model_path: Path
+    updated_model_path: Path
+    training_data: Path
+
     params_learning_rate: float
     params_batch_size: int
     params_epochs: int
     params_image_size: list 
+
+@dataclass(frozen=True)
+class PrepareCallbacksConfig:
+    root_dir: Path
+    tensorboard_root_log_dir: Path
+    checkpoint_model_filepath: Path

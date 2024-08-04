@@ -1,14 +1,19 @@
 from email.mime import base
+from logging import root
 from venv import create
+import os
+
 
 from voluptuous import unicode
+from write_io.components import prepare_base_model
 from write_io.constants import *
 from write_io.utils.common import read_yaml, create_directories
 from write_io.entity.config_entity import (DataIngestionConfig,
                                            DataPreProcessingConfig,
                                            PrepareBaseModelConfig,
                                            BuildModelConfig,
-                                           TrainingModelConfig)
+                                           TrainingModelConfig,
+                                           PrepareCallbacksConfig)
 
 # The ConfigurationManager is responsible for managing all the configuration details such as:
 # Data Ingestion Configuration and more
@@ -81,10 +86,42 @@ class ConfigurationManager:
         )
 
         return build_model_config
+    
+    def prepare_callback_config(self) -> PrepareCallbacksConfig:
+        config = self.config.prepare_callbacks
+        model_ckpt_dir = os.path.dirname(config.checkpoint_model_filepath)
+        create_directories([
+            Path(model_ckpt_dir),
+            Path(config.tensorboard_root_log_dir)
+        ])
+
+        callback_config = PrepareCallbacksConfig(
+            root_dir = Path(config.root_dir),
+            tensorboard_root_log_dir = Path(config.tensorboard_root_log_dir),
+            checkpoint_model_filepath = Path(config.checkpoint_model_filepath)
+        )
+
+        return callback_config
 
     def training_model_config(self) -> TrainingModelConfig:
-         
-        training_model_config = BuildModelConfig(
+        training_path_config = self.config.training
+        built_model_config = self.config.build_model.model_path
+        params = self.params
+        training_data = self.config.data_pre_processing.image_path_training
+        
+        create_directories([
+            Path(training_path_config.root_dir)
+        ])
+
+        training_model_config = TrainingModelConfig(
+            root_dir=Path(training_path_config.root_dir),
+            trained_model_path=Path(training_path_config.trained_model_path),
+            updated_model_path=Path(built_model_config),
+            training_data=Path(training_data),
+            params_batch_size=params.BATCH_SIZE,
+            params_epochs=params.EPOCHS,
+            params_image_size=params.IMAGE_SIZE,
+            params_learning_rate=params.LEARNING_RATE
         )
 
         return training_model_config
