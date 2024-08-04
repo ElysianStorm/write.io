@@ -27,3 +27,29 @@ class PrepareBaseModelConfig:
     num_of_characters: int
     num_of_timestamps: int
 
+@dataclass(frozen=True)
+class BuildModelConfig:
+    root_dir: Path
+    model_path: Path
+    params_learning_rate: float
+    params_batch_size: int
+    params_epochs: int
+    params_image_size: list
+
+@dataclass(frozen=True)
+class TrainingModelConfig:
+    root_dir: Path
+    trained_model_path: Path
+    updated_model_path: Path
+    training_data: Path
+
+    params_learning_rate: float
+    params_batch_size: int
+    params_epochs: int
+    params_image_size: list 
+
+@dataclass(frozen=True)
+class PrepareCallbacksConfig:
+    root_dir: Path
+    tensorboard_root_log_dir: Path
+    checkpoint_model_filepath: Path

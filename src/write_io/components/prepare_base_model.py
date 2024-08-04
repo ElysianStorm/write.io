@@ -1,10 +1,11 @@
+from os import read
 from write_io.entity.config_entity import PrepareBaseModelConfig
 from write_io.entity.config_entity import DataPreProcessingConfig
 from write_io import logger
-from pathlib import Path
+from write_io.constants import *
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from write_io.utils.common import append_to_yaml
 
 class PrepareBaseModel:
     def __init__(self, config_base_model: PrepareBaseModelConfig, config_preprocessed_data: DataPreProcessingConfig):
@@ -22,6 +23,8 @@ class PrepareBaseModel:
         self.valid = pd.read_csv(csv_path_validation)
         self.img_train = config_preprocessed_data.image_path_training
         self.img_valid = config_preprocessed_data.image_path_validation
+
+        self.training_data = TRAINING_DATA_FILE_PATH
 
     def label_to_num(self,label):
         # Convert characters to numbers
@@ -73,5 +76,18 @@ class PrepareBaseModel:
         for i in range(valid_size):
             valid_label_len[i] = len(self.valid.loc[i, 'IDENTITY'])
             valid_y[i, 0:len(self.valid.loc[i, 'IDENTITY'])]= self.label_to_num(self.valid.loc[i, 'IDENTITY'])  
+
+        training_data_info = {
+            'train_y' : train_y,
+            'train_input_len' : train_input_len,
+            'train_label_len' : train_label_len,
+            'train_output' : train_output,
+            'valid_y' : valid_y,
+            'valid_input_len' : valid_input_len,
+            'valid_label_len' : valid_label_len,
+            'valid_output' : valid_output
+        }
+
+        append_to_yaml(self.training_data, training_data_info)
 
         logger.info(f"Training data processed for base model.")
