@@ -1,20 +1,21 @@
-from write_io.entity.config_entity import BuildModelConfig, PrepareBaseModelConfig
 from keras.layers import *
 from keras.models import Model
 from pathlib import Path
 import tensorflow as tf
 import tensorflow as tf
 from keras import backend as K
-# from keras.layers import Input, Conv2D, MaxPooling2D, Reshape, Bidirectional, LSTM, Dense, Lambda, Activation, BatchNormalization, Dropout
+from keras.saving import register_keras_serializable
+from keras.optimizers import Adam
+from write_io.components.custom_layers import CTCLayer
+
+@register_keras_serializable()
+def ctc_loss_function(y_true, y_pred):
+    return y_pred  # y_pred already contains the CTC loss computed by the CTCLayer
 
 class BuildModel:
-    
-    def __init__(self, model_config: BuildModelConfig, config: PrepareBaseModelConfig):
+    def __init__(self, model_config, config):
         self.model_config = model_config
         self.config = config
-
-        # Shape: (256, 64, 1)
-        # This is where the input data enters the model. The input is expected to be a 256x64 grayscale image.
         self.input_data = Input(shape=self.model_config.params_image_size, name='input')
         self.labels = Input(name='gtruth_labels', shape=[self.config.max_str_len], dtype='float32')
         self.input_length = Input(name='input_length', shape=[1], dtype='int64')
@@ -26,7 +27,7 @@ class BuildModel:
         self.save_model(path=self.model_config.model_path, model=self.final_model)
 
     def prepareBasicModel(self):
-        # Conv2D: 32 filters, kernel size 3x3, 'same' padding.
+         # Conv2D: 32 filters, kernel size 3x3, 'same' padding.
         # BatchNormalization: Normalizes the output.
         # Activation: ReLU.
         # MaxPooling2D: Pool size 2x2.
@@ -86,20 +87,16 @@ class BuildModel:
         model.summary()
 
         return model
-    
+
     def prepare_model_last_stage(self):
-        ctc_loss = Lambda(ctc_lambda_func, output_shape=(1,), name='ctc')([self.y_pred, self.labels, self.input_length, self.label_length])
+        # Defining the loss function as a separate layer since its a custom loss function/layer
+        ctc_loss = CTCLayer(name='ctc')([self.y_pred, self.labels, self.input_length, self.label_length])
         model_final = Model(inputs=[self.input_data, self.labels, self.input_length, self.label_length], outputs=ctc_loss)
+        model_final.compile(loss=ctc_loss_function, optimizer=Adam(learning_rate=self.model_config.params_learning_rate))
+        model_final.summary()
 
         return model_final
 
     @staticmethod
-    def save_model(path: Path, model: tf.keras.Model):
+    def save_model(path, model):
         model.save(path)
-
-def ctc_lambda_func(args):
-    y_pred, labels, input_length, label_length = args
-    # the 2 is critical here since the first couple outputs of the RNN
-    # tend to be garbage
-    y_pred = y_pred[:, 2:, :]
-    return K.ctc_batch_cost(labels, y_pred, input_length, label_length)

@@ -33,6 +33,32 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
     except Exception as e:
         raise e
     
+def append_to_yaml(file_path, data_to_append):
+    """appends to yaml file
+
+    Args: 
+        file_path : yaml path input
+        data_to_append : data to add to yaml file
+    """
+    # Load existing data from the YAML file
+    try:
+        with open(file_path, mode='r', encoding='utf-8') as yaml_file:
+            existing_data = yaml.load(yaml_file, Loader=yaml.Loader)
+    except FileNotFoundError:
+        existing_data = {}
+
+    # Append new data to the existing data
+    if isinstance(existing_data, dict) and isinstance(data_to_append, dict):
+        existing_data.update(data_to_append)
+    elif isinstance(existing_data, list) and isinstance(data_to_append, list):
+        existing_data.extend(data_to_append)
+    else:
+        raise ValueError("Existing data and data to append must be of the same type (dict or list).")
+
+    # Write updated data back to the YAML file
+    with open(file_path, mode='wt', encoding='utf-8') as yaml_file:
+        yaml.dump(existing_data, yaml_file, default_flow_style=False)
+        
 def create_directories(path_to_directories: list, verbose=True):
     """Create list of directories
 
@@ -122,16 +148,3 @@ def decodeImage(imgstring, fileName):
 def encodeImageIntoBase64(croppedImagePath):
     with open(croppedImagePath, "rb") as f:
         return base64.b64encode(f.read())
-
-
-def append_to_yaml(file_path, data_to_append):
-    with open(file_path, mode='wt', encoding='utf-8') as yaml_updated:
-        yaml_updated.write(yaml.dump(data_to_append))
-
-# def append_to_yaml(file_path, data_to_append):
-#     with open(file_path, 'a+') as file:
-#         file.seek(0)
-#         existing_data = yaml.full_load(file)
-#         existing_data.append(data_to_append)
-#         file.seek(0)
-#         yaml.dump(existing_data, file, default_flow_style=False)
