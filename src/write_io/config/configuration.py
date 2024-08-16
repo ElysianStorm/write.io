@@ -3,9 +3,6 @@ from logging import root
 from venv import create
 import os
 
-
-from voluptuous import unicode
-from write_io.components import prepare_base_model
 from write_io.constants import *
 from write_io.utils.common import read_yaml, create_directories
 from write_io.entity.config_entity import (DataIngestionConfig,
