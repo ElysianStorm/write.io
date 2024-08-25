@@ -10,6 +10,7 @@ class TrainingModelConfig:
         training_data_file = TRAINING_DATA_FILE_PATH
         self.training_data = read_yaml(training_data_file)
         self.params = read_yaml(PARAMS_FILE_PATH)
+        self.trained_model_path = config.trained_model_path
 
     def get_model(self):
         # Load the model with the custom layer
@@ -18,7 +19,7 @@ class TrainingModelConfig:
             custom_objects={'CTCLayer': CTCLayer}
         )
 
-    def train_model(self):
+    def train_model(self, callback_list):
         print("Training MODEL...")
 
         train_x = self.training_data['train_x']
@@ -37,5 +38,15 @@ class TrainingModelConfig:
             y=train_output,
             validation_data=([valid_x, valid_y, valid_input_len, valid_label_len], valid_output),
             epochs=self.params.EPOCHS,
-            batch_size=self.params.BATCH_SIZE
+            batch_size=self.params.BATCH_SIZE,
+            callbacks=callback_list
         )
+
+        self.save_model(
+            path=self.trained_model_path, 
+            model=self.model
+        )
+    
+    @staticmethod
+    def save_model(path, model):
+        model.save(path)
