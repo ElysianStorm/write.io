@@ -31,6 +31,7 @@ class PrepareBaseModelConfig:
 class BuildModelConfig:
     root_dir: Path
     model_path: Path
+    updated_model_path: Path
     params_learning_rate: float
     params_batch_size: int
     params_epochs: int
@@ -53,3 +54,10 @@ class TrainingModelConfig:
     params_batch_size: int
     params_epochs: int
     params_image_size: list 
+
+@dataclass(frozen=True)
+class ValidationModelConfig:
+    trained_model_path: Path
+    file_path_validation: Path
+    alphabets: str
+    valid_size: int

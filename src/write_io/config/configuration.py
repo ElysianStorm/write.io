@@ -10,7 +10,8 @@ from write_io.entity.config_entity import (DataIngestionConfig,
                                            PrepareBaseModelConfig,
                                            BuildModelConfig,
                                            TrainingModelConfig,
-                                           PrepareCallbacksConfig)
+                                           PrepareCallbacksConfig,
+                                           ValidationModelConfig)
 
 # The ConfigurationManager is responsible for managing all the configuration details such as:
 # Data Ingestion Configuration and more
@@ -45,8 +46,8 @@ class ConfigurationManager:
         config = self.config.data_pre_processing
 
         data_pre_processing_config = DataPreProcessingConfig(
-            train_size = config.train_size,
-            validation_size = config.validation_size,
+            train_size = self.params.TRAIN_SIZE,
+            validation_size = self.params.VALID_SIZE,
             resize_width = config.resize_width,
             resize_height = config.resize_height,
             file_path_training = config.file_path_training,
@@ -76,6 +77,7 @@ class ConfigurationManager:
         build_model_config = BuildModelConfig(
             root_dir = Path(model_config.root_dir),
             model_path = Path(model_config.model_path),
+            updated_model_path = Path(model_config.updated_model_path),
             params_batch_size = self.params.BATCH_SIZE,
             params_epochs = self.params.EPOCHS,
             params_learning_rate = self.params.LEARNING_RATE,
@@ -102,7 +104,7 @@ class ConfigurationManager:
 
     def training_model_config(self) -> TrainingModelConfig:
         training_path_config = self.config.training
-        built_model_config = self.config.build_model.model_path
+        built_model_config = self.config.build_model.updated_model_path
         params = self.params
         training_data = self.config.data_pre_processing.image_path_training
         
@@ -122,3 +124,16 @@ class ConfigurationManager:
         )
 
         return training_model_config
+    
+    def validation_model_config(self) -> ValidationModelConfig:
+       training_config = self.config.build_model
+       preprocessing_config = self.config.data_pre_processing
+       base_model_config = self.config.prepare_base_model
+       validation_model_config = ValidationModelConfig(
+           trained_model_path=Path(training_config.model_path),
+           file_path_validation = preprocessing_config.file_path_validation,
+           alphabets = base_model_config.alphabets,
+           valid_size=self.params.VALID_SIZE
+       )
+
+       return validation_model_config
