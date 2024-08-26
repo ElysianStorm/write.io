@@ -3,6 +3,7 @@ from logging import root
 from venv import create
 import os
 
+from write_io.components import test_model
 from write_io.constants import *
 from write_io.utils.common import read_yaml, create_directories
 from write_io.entity.config_entity import (DataIngestionConfig,
@@ -11,7 +12,8 @@ from write_io.entity.config_entity import (DataIngestionConfig,
                                            BuildModelConfig,
                                            TrainingModelConfig,
                                            PrepareCallbacksConfig,
-                                           ValidationModelConfig)
+                                           ValidationModelConfig,
+                                           TestModelConfig)
 
 # The ConfigurationManager is responsible for managing all the configuration details such as:
 # Data Ingestion Configuration and more
@@ -137,3 +139,19 @@ class ConfigurationManager:
        )
 
        return validation_model_config
+    
+    def test_model_config(self) -> TestModelConfig:
+       training_config = self.config.build_model
+       preprocessing_config = self.config.data_pre_processing
+       base_model_config = self.config.prepare_base_model
+       test_model_config = self.config.test_model
+       
+       test_model_config = TestModelConfig(
+           trained_model_path=Path(training_config.model_path),
+           resize_height=preprocessing_config.resize_height,
+           resize_width=preprocessing_config.resize_width,
+           alphabets = base_model_config.alphabets,
+           image_path = Path(test_model_config.image_path)
+       )
+
+       return test_model_config

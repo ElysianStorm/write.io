@@ -61,3 +61,11 @@ class ValidationModelConfig:
     file_path_validation: Path
     alphabets: str
     valid_size: int
+
+@dataclass(frozen=True)
+class TestModelConfig:
+    trained_model_path: Path
+    resize_height: int
+    resize_width: int
+    alphabets: str
+    image_path: Path

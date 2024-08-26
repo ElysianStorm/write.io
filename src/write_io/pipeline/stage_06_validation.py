@@ -12,7 +12,6 @@ class ValidationModelPipeline:
     def main(self):
         config = ConfigurationManager()
 
-        config = ConfigurationManager()
         prepare_callback_config = config.prepare_callback_config()
         prepare_callback = PrepareCallback(config=prepare_callback_config)
         callback_list = prepare_callback.get_tb_ckpt_callbacks()
