@@ -23,8 +23,9 @@ class BuildModel:
 
     def get_model(self):
         self.model = self.prepareBasicModel()
+        self.save_model(path=self.model_config.model_path, model=self.model)
         self.final_model = self.prepare_model_last_stage()
-        self.save_model(path=self.model_config.model_path, model=self.final_model)
+        self.save_model(path=self.model_config.updated_model_path, model=self.final_model)
 
     def prepareBasicModel(self):
          # Conv2D: 32 filters, kernel size 3x3, 'same' padding.

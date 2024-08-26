@@ -33,16 +33,6 @@ class PrepareBaseModel:
             label_num.append(self.alphabets.find(ch))
             
         return np.array(label_num)
-
-    def num_to_label(self,num):
-        # Convert numbers to characters
-        ret = ""
-        for ch in num:
-            if ch == -1:  # CTC Blank
-                break
-            else:
-                ret+=self.alphabets[ch]
-        return ret
             
     def process_labels(self):
         # Process characters to convert them into numbers and add padding to set each label to same length

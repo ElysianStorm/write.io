@@ -4,6 +4,7 @@ from write_io.pipeline.stage_02_data_preprocessing import DataPreProcessingPipel
 from write_io.pipeline.stage_03_prep_base_model import BaseModelPrepPipeline
 from write_io.pipeline.stage_04_build_model import BuildModelPipeline
 from write_io.pipeline.stage_05_training_model import TrainingModelPipeline
+from write_io.pipeline.stage_06_validation import ValidationModelPipeline
 
 try:
     # STAGE_NAME = "Data Ingestion Stage"
@@ -30,10 +31,15 @@ try:
     obj.main()
     logger.info(f"+++++++++++++ STAGE {STAGE_NAME} Completed +++++++++++++")
 
-    
     STAGE_NAME = "Training Stage"
     logger.info(f"------------- STAGE {STAGE_NAME} Started -------------")
     obj = TrainingModelPipeline()
+    obj.main()
+    logger.info(f"+++++++++++++ STAGE {STAGE_NAME} Completed +++++++++++++")
+
+    STAGE_NAME = "Validation Stage"
+    logger.info(f"------------- STAGE {STAGE_NAME} Started -------------")
+    obj = ValidationModelPipeline()
     obj.main()
     logger.info(f"+++++++++++++ STAGE {STAGE_NAME} Completed +++++++++++++")
 
