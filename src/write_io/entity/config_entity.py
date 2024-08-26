@@ -37,6 +37,12 @@ class BuildModelConfig:
     params_image_size: list
 
 @dataclass(frozen=True)
+class PrepareCallbacksConfig:
+    root_dir: Path
+    tensorboard_root_log_dir: Path
+    checkpoint_model_filepath: Path
+
+@dataclass(frozen=True)
 class TrainingModelConfig:
     root_dir: Path
     trained_model_path: Path
@@ -47,9 +53,3 @@ class TrainingModelConfig:
     params_batch_size: int
     params_epochs: int
     params_image_size: list 
-
-@dataclass(frozen=True)
-class PrepareCallbacksConfig:
-    root_dir: Path
-    tensorboard_root_log_dir: Path
-    checkpoint_model_filepath: Path
