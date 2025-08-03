@@ -39,6 +39,9 @@ The project's methodology is a **systematic, stage-based workflow**, designed fo
 
 6. **Validation**: [`validation_model.py`](validation_model.py) loads the trained model and evaluates it on validation data using character and word accuracy metrics.
 
+<img width="1024" height="1536" alt="ChatGPT Image Aug 3, 2025, 09_18_09 PM" src="https://github.com/user-attachments/assets/6cc5e58a-f275-4519-8ad5-0741f09a4bcc" />
+
+
 ---
 
 ## 🛠 Implementation
